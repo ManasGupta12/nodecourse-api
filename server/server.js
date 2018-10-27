@@ -24,6 +24,21 @@ res.send(doc);
 	res.status(400).send(e);
 });
 });
+app.get('/todos',(req,res)=>{
+//   var id=req.params.id;
+//   if(!ObjectID.isValid(id))
+//   {
+// return res.status(404).send();
+// }
+Todo.find().then((todo)=>{
+	// if(!todo){
+	// 	return res.status(404).send();
+	// }
+	res.send({todo});
+},(e)=>{
+	res.status(400).send()
+});
+});
 
 app.listen(3000,()=>{
 	console.log('started on port 3000');
