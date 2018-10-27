@@ -1,12 +1,14 @@
 const expect=require('expect');
 const request=require('supertest');
-
+const {ObjectID}=require('mongodb');
 
 const {app}=require('./../server');
 const {Todo}=require('./../models/todo');
 const todos=[{
+	_id:new ObjectID(),
 	text:'first test Todo'
 },{
+	_id:new ObjectID(),
 	text:'second todo '
 }];
 
@@ -65,24 +67,41 @@ describe('GET/todos',()=>{
 	})
    .end(done);
 });
-// 	it('should not create todo',(done)=>{
-// 		request(app)
-// 		.post('/todos')
-// 		//.set('x-auth',users[0].tokens[0].token)
-// 		.send({})
-// 		.expect(400)
-// 	    .end((err,res)=>{
-// 			if(err){
-// 				return done(err);
-// 			}
-// 			todo.find().then((todos)=>{
-//              expect(todos.length).toBe(2);
-//              done();
-// 			}).catch((e)=>done(e));
-// 		});
-// 	});
-// });.end(done);
-// });
+describe('GET/todos/:id',()=>{
+	it('should return todo doc',(done)=>{
+		request(app)
+		.get(`/todos/${todos[0]._id.toHexString()}`)
+		 
+		.expect(200)
+   .expect((res)=>{
+     expect(res.body.todo.text).toBe(todos[0].text);
+	})
+	.end(done);
+	});
+	// it('should not return todo created by other user',(done)=>{
+	// 	request(app)
+	// 	.get(`/todos/${todos[1]._id.toHexString()}`)
+		 
+	// 	.expect(404)
+	// .end(done);
+	// });
+
+it('should return 404 if todo not found',(done)=>{
+	var hexid=new ObjectID().toHexString();
+	request(app)
+	.get(`/todos/${hexid}`)
+	
+    .expect(404)
+	.end(done)
+});
+it('should return 404 for non-objects id',(done)=>{
+	request(app)
+	.get(`/todos/123abc`)
+	
+	.expect(404)
+	.end(done)
+ });
+});
 });
 
 
