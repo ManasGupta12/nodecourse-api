@@ -1,3 +1,4 @@
+require('./config.js');
 var express=require('express');
 const _=require('lodash');
 
