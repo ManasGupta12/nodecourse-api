@@ -78,13 +78,7 @@ describe('GET/todos/:id',()=>{
 	})
 	.end(done);
 	});
-	// it('should not return todo created by other user',(done)=>{
-	// 	request(app)
-	// 	.get(`/todos/${todos[1]._id.toHexString()}`)
-		 
-	// 	.expect(404)
-	// .end(done);
-	// });
+	// 
 
 it('should return 404 if todo not found',(done)=>{
 	var hexid=new ObjectID().toHexString();
@@ -123,6 +117,14 @@ describe('DELETE/todos/:id',()=>{
 		}).catch((e)=>done());
 	});
 	});
+	it('should return 404 if todo not found',(done)=>{
+	var hexid=new ObjectID().toHexString();
+	request(app)
+	.delete(`/todos/${hexid}`)
+	//.set('x-auth',users[1].tokens[0].token)
+	.expect(404)
+	.end(done)
+});
 	
 it('should return 404 if object id is valid',(done)=>{
 	request(app)
