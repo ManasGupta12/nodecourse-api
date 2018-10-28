@@ -55,7 +55,7 @@ Todo.findById(id).then((todo)=>{
 	res.status(400).send();
 });
 });
-app.delete('/todos/:id',async(req,res)=>{
+app.delete('/todos/:id',(req,res)=>{
 	var id=req.params.id;
 	if(!ObjectID.isValid(id))
 	{
